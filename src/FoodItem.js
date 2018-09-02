@@ -44,7 +44,7 @@ class FoodItem extends Component {
 
     editFoodItem() {
         console.log(this.state.id);
-        const url = 'http://localhost:12345/cooking/food/item/' + this.state.id + '/'
+        const url = 'http://10.0.0.47:12345/cooking/food/item/' + this.state.id + '/'
         console.log(url);
         var bodyFormData = new FormData();
         bodyFormData.set('recipeDescription', this.state.recipeDesc);
@@ -75,7 +75,7 @@ class FoodItem extends Component {
             bodyFormData.set('file', this.state.pic);
             axios({
                 method: 'post',
-                url: 'http://localhost:12345/cooking/food',
+                url: 'http://10.0.0.47:12345/cooking/food',
                 data: bodyFormData,
                 // config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
