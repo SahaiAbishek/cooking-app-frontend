@@ -20,26 +20,23 @@ class FoodItem extends Component {
             recipeDesc: '',
             recipeIngradients: '',
             recipePreprationInstructions: '',
-            recipes:[]
+            recipes: []
         };
 
         this.showMenuOptions = this.showMenuOptions.bind(this);
     }
 
     componentDidMount() {
-        console.log("Inside component did mount , is editable : " );
-        console.log(this.props.data.recipes);
-
-        const tempRecipes = this.props.data.recipes;
-        let tempDesc='temp';
-        let tempIngradients='temp';
-        let tempPreprationInstructions='TODO';
-        tempRecipes.map((tempRecipe) => {
-            tempDesc = tempRecipe.description;
-            tempIngradients = tempRecipe.ingradients;
-            // tempPreprationInstructions = tempRecipe.preprationInstructions;
-        });
         if (this.props.editable) {
+            const tempRecipes = this.props.data.recipes;
+            let tempDesc = 'temp';
+            let tempIngradients = 'temp';
+            let tempPreprationInstructions = 'TODO';
+            tempRecipes.map((tempRecipe) => {
+                tempDesc = tempRecipe.description;
+                tempIngradients = tempRecipe.ingradients;
+                tempPreprationInstructions = tempRecipe.preprationInstructions;
+            });
             this.setState({
                 id: this.props.data.id,
                 name: this.props.data.name,
@@ -64,14 +61,24 @@ class FoodItem extends Component {
         const url = 'http://10.0.0.47:12345/cooking/food/item/' + this.state.id + '/'
         console.log(url);
         var bodyFormData = new FormData();
+        bodyFormData.set('name', this.state.name);
+        bodyFormData.set('calories', this.state.calories);
+        bodyFormData.set('cusineType', this.state.cusine_type);
+        bodyFormData.set('mealCategory', this.state.meal_category);
+        bodyFormData.set('mealType', this.state.meal_type);
+        bodyFormData.set('file', this.state.pic);
         bodyFormData.set('recipeDescription', this.state.recipeDesc);
-        bodyFormData.set('pic', this.state.pic);
+        bodyFormData.set('recipeIngradients', this.state.recipeIngradients);
+        bodyFormData.set('recipePreprationInstructions ', this.state.recipePreprationInstructions);
         axios.put(url,
             bodyFormData,
         ).
             then((response) => {
-                console.log("SUCCESS : " + response);
-                this.props.cancelFoodItem();
+                console.log(response);
+                // this.props.cancelFoodItem();
+                this.setState({
+                    showMenu: true
+                })
             })
             .catch(function (response) {
                 console.log(response);
@@ -90,9 +97,9 @@ class FoodItem extends Component {
             bodyFormData.set('mealCategory', this.state.meal_category);
             bodyFormData.set('mealType', this.state.meal_type);
             bodyFormData.set('file', this.state.pic);
-            bodyFormData.set('recipeDescription',this.state.recipeDesc);
-            bodyFormData.set('recipeIngradients',this.state.recipeIngradients);
-            bodyFormData.set('recipeIngradients',this.state.recipeIngradients);
+            bodyFormData.set('recipeDescription', this.state.recipeDesc);
+            bodyFormData.set('recipeIngradients', this.state.recipeIngradients);
+            bodyFormData.set('recipePreprationInstructions ', this.state.recipePreprationInstructions);
             axios({
                 method: 'post',
                 url: 'http://10.0.0.47:12345/cooking/food',
