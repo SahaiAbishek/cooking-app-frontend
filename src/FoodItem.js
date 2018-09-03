@@ -17,21 +17,38 @@ class FoodItem extends Component {
             pic: null,
             showMenu: false,
             isEditable: '',
-            recipeDesc : ''
+            recipeDesc: '',
+            recipeIngradients: '',
+            recipePreprationInstructions: '',
+            recipes:[]
         };
 
         this.showMenuOptions = this.showMenuOptions.bind(this);
     }
 
     componentDidMount() {
-        console.log("Inside component did mount , is editable : " + this.props.editable);
+        console.log("Inside component did mount , is editable : " );
+        console.log(this.props.data.recipes);
 
+        const tempRecipes = this.props.data.recipes;
+        let tempDesc='temp';
+        let tempIngradients='temp';
+        let tempPreprationInstructions='TODO';
+        tempRecipes.map((tempRecipe) => {
+            tempDesc = tempRecipe.description;
+            tempIngradients = tempRecipe.ingradients;
+            // tempPreprationInstructions = tempRecipe.preprationInstructions;
+        });
         if (this.props.editable) {
             this.setState({
                 id: this.props.data.id,
                 name: this.props.data.name,
                 calories: this.props.data.calories,
-                isEditable: this.props.editable
+                isEditable: this.props.editable,
+                recipes: this.props.data.recipes,
+                recipeDesc: tempDesc,
+                recipeIngradients: tempIngradients,
+                recipePreprationInstructions: tempPreprationInstructions,
             })
         }
     }
@@ -73,6 +90,9 @@ class FoodItem extends Component {
             bodyFormData.set('mealCategory', this.state.meal_category);
             bodyFormData.set('mealType', this.state.meal_type);
             bodyFormData.set('file', this.state.pic);
+            bodyFormData.set('recipeDescription',this.state.recipeDesc);
+            bodyFormData.set('recipeIngradients',this.state.recipeIngradients);
+            bodyFormData.set('recipeIngradients',this.state.recipeIngradients);
             axios({
                 method: 'post',
                 url: 'http://10.0.0.47:12345/cooking/food',
@@ -133,9 +153,21 @@ class FoodItem extends Component {
         });
     }
 
-    handleRecipeDescChange(event){
+    handleRecipeDescChange(event) {
         this.setState({
             recipeDesc: event.target.value
+        });
+    }
+
+    handleIngradientsChange(event) {
+        this.setState({
+            recipeIngradients: event.target.value
+        });
+    }
+
+    handlePreprationInstructionsChange(event) {
+        this.setState({
+            recipePreprationInstructions: event.target.value
         });
     }
 
@@ -223,20 +255,26 @@ class FoodItem extends Component {
                         <tbody>
                             <tr>
                                 <td>
-                                    <textarea className="textarea" placeholder="Ingradients.." />
+                                    <textarea className="textarea"
+                                        value={this.state.recipeIngradients}
+                                        onChange={this.handleIngradientsChange.bind(this)}
+                                        placeholder="Ingradients.." />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <textarea className="textarea" 
-                                    value={this.state.recipeDesc}
-                                    placeholder="Describe your recipe"
-                                    onChange={this.handleRecipeDescChange.bind(this)} />
+                                    <textarea className="textarea"
+                                        value={this.state.recipeDesc}
+                                        placeholder="Describe your recipe"
+                                        onChange={this.handleRecipeDescChange.bind(this)} />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <textarea className="textarea" placeholder="Prepration Instructions..." />
+                                    <textarea className="textarea"
+                                        value={this.state.recipePreprationInstructions}
+                                        onChange={this.handlePreprationInstructionsChange.bind(this)}
+                                        placeholder="Prepration Instructions..." />
                                 </td>
                             </tr>
                         </tbody>
