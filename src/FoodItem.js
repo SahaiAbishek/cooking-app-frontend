@@ -9,11 +9,11 @@ class FoodItem extends Component {
         this.state = {
             id: '',
             name: '',
-            meal_type: "",
-            meal_category: "",
-            cusine_type: "",
+            meal_type: '',
+            meal_category: '',
+            cusine_type: '',
             recipe: "Add recipe here",
-            calories: "",
+            calories: '',
             pic: null,
             showMenu: false,
             isEditable: '',
@@ -27,6 +27,7 @@ class FoodItem extends Component {
     }
 
     componentDidMount() {
+        console.log("this.props.editable : " + this.props.editable);
         if (this.props.editable) {
             const tempRecipes = this.props.data.recipes;
             let tempDesc = 'temp';
@@ -57,38 +58,67 @@ class FoodItem extends Component {
     }
 
     editFoodItem() {
-        console.log(this.state.id);
-        const url = 'http://10.0.0.47:12345/cooking/food/item/' + this.state.id + '/'
-        console.log(url);
-        var bodyFormData = new FormData();
-        bodyFormData.set('name', this.state.name);
-        bodyFormData.set('calories', this.state.calories);
-        bodyFormData.set('cusineType', this.state.cusine_type);
-        bodyFormData.set('mealCategory', this.state.meal_category);
-        bodyFormData.set('mealType', this.state.meal_type);
-        bodyFormData.set('file', this.state.pic);
-        bodyFormData.set('recipeDescription', this.state.recipeDesc);
-        bodyFormData.set('recipeIngradients', this.state.recipeIngradients);
-        bodyFormData.set('recipePreprationInstructions ', this.state.recipePreprationInstructions);
-        axios.put(url,
-            bodyFormData,
-        ).
-            then((response) => {
+       
+    }
+
+    saveNewFoodItem(formSubmitevent) {
+        formSubmitevent.preventDefault();
+        if (this.state.isEditable) {
+            console.log(this.state.id);
+            var myurl = `http://localhost:12345/cooking/food/item/${this.state.id}`;
+            if( this.state.name !== null){
+                myurl = myurl+`?name=${this.state.name}`;
+            }
+            if( this.state.calories.length > 0 ){
+                myurl = myurl+`&calories=${this.state.calories}`;
+            }
+            if( this.state.cusine_type.length > 0 ){
+                myurl = myurl+`&cusine_type=${this.state.cusine_type}`;
+            }
+            if( this.state.cusine_type.length > 0 ){
+                myurl = myurl+`&cusineType=${this.state.cusine_type}`;
+            }
+            if( this.state.meal_category.length > 0 ){
+                myurl = myurl+`&mealCategory=${this.state.meal_category}`;
+            }
+            if( this.state.meal_type.length > 0 ){
+                myurl = myurl+`&mealType=${this.state.meal_type}`;
+            }
+            if( this.state.recipeDesc.length > 0 ){
+                myurl = myurl+`&recipeDescription=${this.state.recipeDesc}`;
+            }
+            if( this.state.recipeIngradients.length > 0 ){
+                myurl = myurl+`&recipeIngradients=${this.state.recipeIngradients}`;
+            }
+            if( this.state.recipePreprationInstructions.length > 0 ){
+                myurl = myurl+`&recipePreprationInstructions=${this.state.recipePreprationInstructions}`;
+            }
+
+            let editFormData = new FormData();
+        
+            editFormData.set('file', this.state.pic);
+            // axios.put(url,this.registerData,
+            //     editFormData,
+            //     { headers: { 'Content-Type': 'multipart/form-data' } }
+            // )
+            axios({
+                method: 'PUT',
+                url: myurl ,
+                data: editFormData,
+                query: {
+                    name: this.state.name
+                },
+                config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
+            }).then((response) => {
                 console.log(response);
                 // this.props.cancelFoodItem();
                 this.setState({
                     showMenu: true
                 })
             })
-            .catch(function (response) {
-                console.log(response);
-            });
-    }
-
-    saveNewFoodItem(formSubmitevent) {
-        formSubmitevent.preventDefault();
-        if (this.state.isEditable) {
-            this.editFoodItem();
+                .catch(function (response) {
+                    console.log(response);
+                });
         } else {
             var bodyFormData = new FormData();
             bodyFormData.set('name', this.state.name);
@@ -100,9 +130,10 @@ class FoodItem extends Component {
             bodyFormData.set('recipeDescription', this.state.recipeDesc);
             bodyFormData.set('recipeIngradients', this.state.recipeIngradients);
             bodyFormData.set('recipePreprationInstructions ', this.state.recipePreprationInstructions);
+            console.log(bodyFormData);
             axios({
                 method: 'post',
-                url: 'http://10.0.0.47:12345/cooking/food',
+                url: 'http://localhost:12345/cooking/food',
                 data: bodyFormData,
                 // config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
