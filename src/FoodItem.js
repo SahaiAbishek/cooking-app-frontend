@@ -58,14 +58,7 @@ class FoodItem extends Component {
     }
 
     editFoodItem() {
-       
-    }
-
-    saveNewFoodItem(formSubmitevent) {
-        formSubmitevent.preventDefault();
-        if (this.state.isEditable) {
-            console.log(this.state.id);
-            var myurl = `http://localhost:12345/cooking/food/item/${this.state.id}`;
+        var myurl = `http://localhost:12345/cooking/food/item/${this.state.id}`;
             if( this.state.name !== null){
                 myurl = myurl+`?name=${this.state.name}`;
             }
@@ -119,6 +112,12 @@ class FoodItem extends Component {
                 .catch(function (response) {
                     console.log(response);
                 });
+    }
+
+    saveNewFoodItem(formSubmitevent) {
+        formSubmitevent.preventDefault();
+        if (this.state.isEditable) {
+           this.editFoodItem();
         } else {
             var bodyFormData = new FormData();
             bodyFormData.set('name', this.state.name);
