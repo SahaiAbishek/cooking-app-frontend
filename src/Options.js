@@ -12,7 +12,7 @@ class Options extends Component {
         };
     }
 
-    addNewFoodItem(item) {
+    addNewFoodItem() {
         this.setState(prevState => ({
             showMenu: !this.state.showMenu
         }))
