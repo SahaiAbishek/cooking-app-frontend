@@ -38,6 +38,84 @@ class Question extends Component {
                     <button onClick={this.handlePositiveResponse.bind(this)}> YES </button>
                     <button onClick={this.handleNegetiveResponse.bind(this)}> NO </button>
                 </p>
+                <table className="MenuItems">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                email
+                                            </td>
+                                            <td>
+                                                <input type="text" />
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                password
+                                                </td>
+                                            <td>
+                                                <input type="password" />
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                email
+                                                </td>
+                                            <td>
+                                                <input type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                password
+                                            </td>
+                                            <td>
+                                                <input type="password" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                confirm password
+                                                </td>
+                                            <td> <input type="password" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <button onClick={this.handlePositiveResponse.bind(this)}> Login </button>
+                            </td>
+                            <td>
+                                <button onClick={this.handlePositiveResponse.bind(this)}> sign up </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    <font color="green">
+                    Once you start running your life changes. 
+                    Especially your social circle.
+                    Eating  habits gets better and you keep thinking about your shoes ;).
+                    </font>
+                </p>
+                <p>
+                    <button className="AddItemButton"> Shoe tracker </button>
+                </p>
             </div>
         );
     }
