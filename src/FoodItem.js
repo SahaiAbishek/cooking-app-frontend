@@ -58,7 +58,8 @@ class FoodItem extends Component {
     }
 
     editFoodItem() {
-        var myurl = `http://10.0.0.47:12345/cooking/food/item/${this.state.id}`;
+
+        var myurl = `https://boiling-hamlet-20361.herokuapp.com/cooking/food/item/${this.state.id}`;
             if( this.state.name !== null){
                 myurl = myurl+`?name=${this.state.name}`;
             }
@@ -132,7 +133,7 @@ class FoodItem extends Component {
             console.log(bodyFormData);
             axios({
                 method: 'post',
-                url: 'http://10.0.0.47:12345/cooking/food',
+                url: 'https://boiling-hamlet-20361.herokuapp.com/cooking/food',
                 data: bodyFormData,
                 // config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
