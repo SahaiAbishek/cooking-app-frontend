@@ -11,11 +11,17 @@ class Menu extends Component {
             menuItems: [],
             data: "",
             pic: null,
-            isEditable:false
+            isEditable: false,
+            userName:""
         };
     }
 
     componentDidMount() {
+        //get user details from last page
+        const un = this.props.user;
+        this.setState({
+            userName: un
+        });
         // axios.get(`https://boiling-hamlet-20361.herokuapp.com/cooking/food/items`)
         axios.get(`http://10.0.0.47:12345/cooking/food/items`)
             .then(response => {
@@ -31,16 +37,15 @@ class Menu extends Component {
         // this.props.addItemHandler(item);
         this.setState({
             showFoodRecipe: true,
-            isEditable : false,
+            isEditable: false,
             // data: item
         });
-        console.log(">>>>>>>>>"+this.state.showFoodRecipe);
     }
 
     showFoodRecipe(item) {
         this.setState({
             showFoodRecipe: true,
-            isEditable : true,
+            isEditable: true,
             data: item
         });
         // this.props.addItemHandler(item);
@@ -49,8 +54,8 @@ class Menu extends Component {
     searchFood(event) {
         if (event.key === 'Enter') {
             // axios.get(`https://boiling-hamlet-20361.herokuapp.com/cooking/food/items/` + event.target.value)
-            axios.get(`http://10.0.0.47:12345/cooking/food/items/` + event.target.value)   
-            .then(response => {
+            axios.get(`http://10.0.0.47:12345/cooking/food/items/` + event.target.value)
+                .then(response => {
                     const menuItems = response.data;
                     this.setState({ menuItems });
                 }).catch(function (error) {
@@ -73,14 +78,12 @@ class Menu extends Component {
         bodyFormData.set('pic', this.state.pic);
         axios.put(url,
             bodyFormData,
-        ).
-            then((response) => {
-                console.log("SUCCESS : " + response);
-                this.props.cancelFoodItem();
-            })
-            .catch(function (response) {
-                console.log(response);
-            });
+        ).then((response) => {
+            console.log("SUCCESS : " + response);
+            this.props.cancelFoodItem();
+        }).catch(function (response) {
+            console.log(response);
+        });
     }
 
     cancelNewFoodItem() {
@@ -89,6 +92,7 @@ class Menu extends Component {
     render() {
         const recipe = (
             <div>
+                <h1> Welcome {this.state.userName} </h1>
                 <p>Filter Options </p>
                 <table className="Filter">
                     <tbody>
