@@ -20,14 +20,18 @@ class FoodItem extends Component {
             recipeDesc: '',
             recipeIngradients: '',
             recipePreprationInstructions: '',
-            recipes: []
+            recipes: [],
+            userName:""
         };
 
         this.showMenuOptions = this.showMenuOptions.bind(this);
     }
 
     componentDidMount() {
-        console.log("this.props.editable : " + this.props.editable);
+        this.setState({
+            userName:this.props.user
+        })
+        
         if (this.props.editable) {
             const tempRecipes = this.props.data.recipes;
             let tempDesc = 'temp';
@@ -46,7 +50,7 @@ class FoodItem extends Component {
                 recipes: this.props.data.recipes,
                 recipeDesc: tempDesc,
                 recipeIngradients: tempIngradients,
-                recipePreprationInstructions: tempPreprationInstructions,
+                recipePreprationInstructions: tempPreprationInstructions
             })
         }
     }
@@ -214,6 +218,7 @@ class FoodItem extends Component {
     render() {
         const foodItem = (
             <div>
+                <p>Welcome {this.state.userName}</p>
                 {this.state.isEditable ? "Update item" : "Add new food item of your choice:"}
 
                 <form onSubmit={this.saveNewFoodItem.bind(this)} >
@@ -338,7 +343,7 @@ class FoodItem extends Component {
         )
         return (
             <div>
-                {this.state.showMenu ? <Menu /> : foodItem}
+                {this.state.showMenu ? <Menu user={this.state.userName} /> : foodItem}
             </div>
         );
     }

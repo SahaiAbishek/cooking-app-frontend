@@ -12,7 +12,7 @@ class Menu extends Component {
             data: "",
             pic: null,
             isEditable: false,
-            userName:""
+            userName: ""
         };
     }
 
@@ -26,7 +26,6 @@ class Menu extends Component {
         axios.get(`http://10.0.0.47:12345/cooking/food/items`)
             .then(response => {
                 const menuItems = response.data;
-                console.log(menuItems)
                 this.setState({ menuItems });
             }).catch(function (error) {
                 console.log("Resource not found");
@@ -90,9 +89,8 @@ class Menu extends Component {
     }
 
     render() {
-        const recipe = (
+        const filters = (
             <div>
-                <h1> Welcome {this.state.userName} </h1>
                 <p>Filter Options </p>
                 <table className="Filter">
                     <tbody>
@@ -141,7 +139,11 @@ class Menu extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <h1> Menu options : </h1>
+            </div>
+        );
+        const recipes = (
+            <div>
+                Welcome {this.state.userName}
                 <p>
                     <button className="AddItemButton" onClick={this.addnewItem.bind(this)}>
                         Dont see what you want, create an item of your choice !
@@ -153,10 +155,12 @@ class Menu extends Component {
                             this.state.menuItems.map((item, i) => {
                                 return (
                                     <tr key={i} className="tr">
+                                        <td>
+                                            <img src={"data:image/jpeg;base64," + item.pic}
+                                                height="50" width="80" alt="some name"
+                                                onClick={this.showFoodRecipe.bind(this, item)} />
+                                        </td>
                                         <td >
-                                            {/* <button className="MenuButton" onClick={this.showFoodRecipe.bind(this)}>
-                                        {item.name}
-                                        </button> */}
                                             <a href="#"
                                                 onClick={this.showFoodRecipe.bind(this, item)}>
                                                 {item.name}
@@ -166,16 +170,8 @@ class Menu extends Component {
                                             {item.mealType}
                                         </td>
                                         <td>
-                                            <img src={"data:image/jpeg;base64," + item.pic}
-                                                height="50" width="80" alt="some name"
-                                                onClick={this.showFoodRecipe.bind(this, item)} />
-
+                                            {item.calories}
                                         </td>
-                                        {/* <td>
-                                            <input type="file"
-                                                onChange={this.handlePicChange.bind(this)} />
-                                            <button className="MenuButton" onClick={this.updateFoodPic.bind(this, item)}> Add/Edit Picture </button>
-                                        </td> */}
                                     </tr>
                                 )
                             }
@@ -190,8 +186,9 @@ class Menu extends Component {
             <div>
                 {this.state.showFoodRecipe ?
                     <FoodItem cancelFoodItem={this.cancelNewFoodItem.bind(this)}
-                        data={this.state.data} editable={this.state.isEditable} />
-                    : recipe}
+                        data={this.state.data} editable={this.state.isEditable}
+                        user={this.state.userName} />
+                    : recipes}
             </div>
         );
     }
