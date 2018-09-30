@@ -12,9 +12,10 @@ class Question extends Component {
             welcomeText: "Feeling hungry yet ?",
             negetiveResponseText: "Take your time I am waiting !!!!!!",
             isNegetiveResponse: false,
-            username: "user name",
-            password: "password",
-            nextPage:"none"
+            username: "",
+            password: "",
+            nextPage: "none",
+            errors: []
         }
     }
 
@@ -26,7 +27,7 @@ class Question extends Component {
 
     handlePositiveResponse() {
         this.setState({
-            username:"guest",
+            username: "guest",
             nextPage: "menu"
         });
     }
@@ -43,7 +44,32 @@ class Question extends Component {
         });
     }
 
+    validateFields(name, password) {
+        const errors = [];
+        if (name.length === 0) {
+            errors.push("Name can't be empty");
+        }
+
+        if (password.length === 0) {
+            errors.push("Password can't be empty");
+        }
+
+        if (name.length < 5) {
+            errors.push("Email should be at least 5 charcters long");
+        }
+        if (name.split('').filter(x => x === '@').length !== 1) {
+            errors.push("Email should contain a @");
+        }
+        if (name.indexOf('.') === -1) {
+            errors.push("Email should contain at least one dot");
+        }
+        return errors;
+    }
+
     handleLogin() {
+        const { username, password } = this.state;
+        const errors = this.validateFields(username, password);
+        
         var url = this.state.devURL;
         axios.get(url + `/cooking/user/` + this.state.username + "/" + this.state.password)
             .then(response => {
@@ -53,17 +79,21 @@ class Question extends Component {
                         nextPage: "menu"
                     });
                 } else {
-                    alert("Login or password mismatch");
+                    errors.push("Login details not correct");
                 }
             }).catch(function (error) {
                 console.log("Resource not found");
             });
-
+            if (errors.length > 0) {
+                this.setState({ errors });
+                return;
+            }
     }
 
     render() {
-        if(this.state.nextPage === 'menu'){
-           return <Menu user={this.state.username} />
+        const { errors } = this.state;
+        if (this.state.nextPage === 'menu') {
+            return <Menu user={this.state.username} />
         }
         return (
             <div>
@@ -85,6 +115,9 @@ class Question extends Component {
                     <tbody>
                         <tr>
                             <td>
+                                {errors.map(error => (
+                                    <p key={error}><font color="red">Error: {error}</font></p>
+                                ))}
                                 <table>
                                     <tbody>
                                         <tr>

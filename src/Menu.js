@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import FoodItem from './FoodItem';
+import MealPlan from './MealPlan';
 
 class Menu extends Component {
 
@@ -12,7 +13,8 @@ class Menu extends Component {
             data: "",
             pic: null,
             isEditable: false,
-            userName: ""
+            userName: "",
+            nextPage:""
         };
     }
 
@@ -38,6 +40,12 @@ class Menu extends Component {
             showFoodRecipe: true,
             isEditable: false,
             // data: item
+        });
+    }
+
+    createMealPlan() {
+        this.setState({
+            nextPage:"MealPlan"
         });
     }
 
@@ -89,6 +97,10 @@ class Menu extends Component {
     }
 
     render() {
+
+        if(this.state.nextPage === "MealPlan"){
+            return <MealPlan user={this.state.userName} />
+        }
         const filters = (
             <div>
                 <p>Filter Options </p>
@@ -144,11 +156,22 @@ class Menu extends Component {
         const recipes = (
             <div>
                 Welcome {this.state.userName}
-                <p>
-                    <button className="AddItemButton" onClick={this.addnewItem.bind(this)}>
-                        Dont see what you want, create an item of your choice !
-                </button>
-                </p>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <button className="AddItemButton" onClick={this.addnewItem.bind(this)}>
+                                Create An item of your choice
+                            </button>
+                        </td>
+                        <td>
+                            <button className="MealPlanButton" onClick={this.createMealPlan.bind(this)}>
+                                Create A Meal Plan
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
                 <table className="MenuItems">
                     <tbody>
                         {
