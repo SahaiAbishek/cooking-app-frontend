@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Menu from './Menu';
 
 class Shoe extends Component {
 
@@ -16,7 +17,8 @@ class Shoe extends Component {
             startDate: "",
             endDate: "",
             miles: "",
-            size: ""
+            size: "",
+            nextPage:""
         }
     }
 
@@ -65,6 +67,13 @@ class Shoe extends Component {
             });
     }
 
+    showMenu(event){
+        event.preventDefault();
+        this.setState({
+            nextPage: "menu"
+        });
+    }
+
     handleBrandChange(event) {
         this.setState({
             brand: event.target.value
@@ -108,6 +117,9 @@ class Shoe extends Component {
     }
 
     render() {
+        if(this.state.nextPage === "menu"){
+            return <Menu user={this.state.userName} />
+        }
         return (
             <div>
                 <h1> {this.state.userName} Track your shoes here : </h1>
@@ -192,7 +204,7 @@ class Shoe extends Component {
                             </td>
                             <td text-align="center">
                                 <button className="btn btn-default"
-                                // onClick={this.showMenuOptions.bind(this)} 
+                                onClick={this.showMenu.bind(this)} 
                                 >
                                     Cancel
                                 </button>
