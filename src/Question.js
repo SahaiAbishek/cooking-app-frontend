@@ -14,6 +14,7 @@ class Question extends Component {
             isNegetiveResponse: false,
             username: "",
             password: "",
+            password1: "",
             nextPage: "none",
             errors: []
         }
@@ -44,6 +45,12 @@ class Question extends Component {
         });
     }
 
+    handlePassword1Change(event) {
+        this.setState({
+            password1: event.target.value
+        });
+    }
+
     validateFields(name, password) {
         const errors = [];
         if (name.length === 0) {
@@ -69,7 +76,7 @@ class Question extends Component {
     handleLogin() {
         const { username, password } = this.state;
         const errors = this.validateFields(username, password);
-        
+
         var url = this.state.devURL;
         axios.get(url + `/cooking/user/` + this.state.username + "/" + this.state.password)
             .then(response => {
@@ -80,14 +87,53 @@ class Question extends Component {
                     });
                 } else {
                     errors.push("Login details not correct");
+                    this.setState({ errors });
+                    return;
                 }
             }).catch(function (error) {
                 console.log("Resource not found");
             });
-            if (errors.length > 0) {
-                this.setState({ errors });
-                return;
-            }
+        if (errors.length > 0) {
+            this.setState({ errors });
+            return;
+        }
+    }
+
+    handleSignUp() {
+        const { username, password } = this.state;
+        const errors = this.validateFields(username, password);
+        if (this.state.password !== this.state.password1) {
+            errors.push("Both Passwords must match");
+            this.setState({ errors });
+            return;
+        }
+       
+
+        var url = this.state.devURL;
+        const request = 
+            {
+                "email": username,
+                "password": password,
+            };
+
+        axios({
+            method: 'post',
+            // url: 'https://boiling-hamlet-20361.herokuapp.com/cooking/food',
+            url: url + `/cooking/user/add`,
+            data: request,
+        })
+            .then((response) => {
+                this.setState({
+                    nextPage: "menu"
+                });
+            })
+            .catch(function (response) {
+                console.log("Exception......");
+            });
+        if (errors.length > 0) {
+            this.setState({ errors });
+            return;
+        }
     }
 
     render() {
@@ -154,7 +200,9 @@ class Question extends Component {
                                                 email
                                                 </td>
                                             <td>
-                                                <input type="text" />
+                                                <input type="text"
+                                                    placeholder="user name"
+                                                    onChange={this.handleUserNameChange.bind(this)} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -162,14 +210,18 @@ class Question extends Component {
                                                 password
                                             </td>
                                             <td>
-                                                <input type="password" />
+                                                <input type="password"
+                                                    placeholder="password"
+                                                    onChange={this.handlePasswordChange.bind(this)} />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 confirm password
                                                 </td>
-                                            <td> <input type="password" />
+                                            <td> <input type="password"
+                                                placeholder="password"
+                                                onChange={this.handlePassword1Change.bind(this)} />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -182,7 +234,7 @@ class Question extends Component {
                                 <button onClick={this.handleLogin.bind(this)}> Login </button>
                             </td>
                             <td>
-                                <button onClick={this.handlePositiveResponse.bind(this)}> sign up </button>
+                                <button onClick={this.handleSignUp.bind(this)}> sign up </button>
                             </td>
                         </tr>
                     </tbody>
@@ -193,9 +245,6 @@ class Question extends Component {
                         Especially your social circle.
                         Eating  habits gets better and you keep thinking about your shoes ;).
                     </font>
-                </p>
-                <p>
-                    <button className="AddItemButton"> Shoe tracker </button>
                 </p>
             </div>
         );

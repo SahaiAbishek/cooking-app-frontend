@@ -135,7 +135,6 @@ class FoodItem extends Component {
             bodyFormData.set('recipeDescription', this.state.recipeDesc);
             bodyFormData.set('recipeIngradients', this.state.recipeIngradients);
             bodyFormData.set('recipePreprationInstructions ', this.state.recipePreprationInstructions);
-            console.log(bodyFormData);
             axios({
                 method: 'post',
                 // url: 'https://boiling-hamlet-20361.herokuapp.com/cooking/food',

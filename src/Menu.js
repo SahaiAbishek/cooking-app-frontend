@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import FoodItem from './FoodItem';
 import MealPlan from './MealPlan';
+import Shoe from './Shoe';
 
 class Menu extends Component {
 
@@ -14,7 +15,7 @@ class Menu extends Component {
             pic: null,
             isEditable: false,
             userName: "",
-            nextPage:""
+            nextPage: "none"
         };
     }
 
@@ -37,6 +38,7 @@ class Menu extends Component {
     addnewItem() {
         // this.props.addItemHandler(item);
         this.setState({
+            nextPage: "showFoodRecipe",
             showFoodRecipe: true,
             isEditable: false,
             // data: item
@@ -45,7 +47,7 @@ class Menu extends Component {
 
     createMealPlan() {
         this.setState({
-            nextPage:"MealPlan"
+            nextPage: "MealPlan"
         });
     }
 
@@ -93,14 +95,16 @@ class Menu extends Component {
         });
     }
 
+    addShoe(item) {
+        this.setState({
+            nextPage: "userShoes"
+        });
+    }
+
     cancelNewFoodItem() {
     }
 
     render() {
-
-        if(this.state.nextPage === "MealPlan"){
-            return <MealPlan user={this.state.userName} />
-        }
         const filters = (
             <div>
                 <p>Filter Options </p>
@@ -153,23 +157,37 @@ class Menu extends Component {
                 </table>
             </div>
         );
+
+        if(this.state.nextPage=== "userShoes"){
+            return <Shoe user={this.state.userName} />
+        }
+
+        if (this.state.nextPage === "MealPlan") {
+            return <MealPlan user={this.state.userName} />
+        }
+
         const recipes = (
             <div>
                 Welcome {this.state.userName}
                 <table>
                     <tbody>
-                    <tr>
-                        <td>
-                            <button className="AddItemButton" onClick={this.addnewItem.bind(this)}>
-                                Create An item of your choice
-                            </button>
-                        </td>
-                        <td>
-                            <button className="MealPlanButton" onClick={this.createMealPlan.bind(this)}>
-                                Create A Meal Plan
-                            </button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <button className="AddItemButton" onClick={this.addnewItem.bind(this)}>
+                                    Create An item of your choice
+                        </button>
+                            </td>
+                            <td>
+                                <button className="MealPlanButton" onClick={this.createMealPlan.bind(this)}>
+                                    Create A Meal Plan
+                        </button>
+                            </td>
+                            <td>
+                                <button className="MealPlanButton" onClick={this.addShoe.bind(this)}>
+                                    Shoe Tracker
+                        </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <table className="MenuItems">
@@ -205,13 +223,16 @@ class Menu extends Component {
                 </table>
             </div>
         );
+
+        if (this.state.nextPage === "showFoodRecipe") {
+            return <FoodItem cancelFoodItem={this.cancelNewFoodItem.bind(this)}
+                data={this.state.data} editable={this.state.isEditable}
+                user={this.state.userName} />;
+        }
+
         return (
             <div>
-                {this.state.showFoodRecipe ?
-                    <FoodItem cancelFoodItem={this.cancelNewFoodItem.bind(this)}
-                        data={this.state.data} editable={this.state.isEditable}
-                        user={this.state.userName} />
-                    : recipes}
+                {recipes}
             </div>
         );
     }
