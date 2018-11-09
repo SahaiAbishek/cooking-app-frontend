@@ -38,7 +38,7 @@ class Menu extends Component {
     addnewItem() {
         // this.props.addItemHandler(item);
         this.setState({
-            nextPage: "showFoodRecipe",
+            nextPage: "addFoodRecipe",
             showFoodRecipe: true,
             isEditable: false,
             // data: item
@@ -53,6 +53,7 @@ class Menu extends Component {
 
     showFoodRecipe(item) {
         this.setState({
+            nextPage: "showFoodRecipe",
             showFoodRecipe: true,
             isEditable: true,
             data: item
@@ -225,6 +226,12 @@ class Menu extends Component {
         );
 
         if (this.state.nextPage === "showFoodRecipe") {
+            return <FoodItem cancelFoodItem={this.cancelNewFoodItem.bind(this)}
+                data={this.state.data} editable={this.state.isEditable}
+                user={this.state.userName} />;
+        }
+
+        if (this.state.nextPage === "addFoodRecipe") {
             return <FoodItem cancelFoodItem={this.cancelNewFoodItem.bind(this)}
                 data={this.state.data} editable={this.state.isEditable}
                 user={this.state.userName} />;
