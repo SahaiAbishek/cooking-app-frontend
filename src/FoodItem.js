@@ -13,7 +13,7 @@ class FoodItem extends Component {
             meal_category: '',
             cusine_type: '',
             recipe: "Add recipe here",
-            calories: '',
+            cals: '',
             pic: null,
             showMenu: false,
             isEditable: '',
@@ -21,7 +21,7 @@ class FoodItem extends Component {
             recipeIngradients: '',
             recipePreprationInstructions: '',
             recipes: [],
-            userName:""
+            userName: ""
         };
 
         this.showMenuOptions = this.showMenuOptions.bind(this);
@@ -29,9 +29,9 @@ class FoodItem extends Component {
 
     componentDidMount() {
         this.setState({
-            userName:this.props.user
+            userName: this.props.user
         })
-        
+
         if (this.props.editable) {
             const tempRecipes = this.props.data.recipes;
             let tempDesc = 'temp';
@@ -45,7 +45,10 @@ class FoodItem extends Component {
             this.setState({
                 id: this.props.data.id,
                 name: this.props.data.name,
-                calories: this.props.data.calories,
+                meal_type: this.props.data.mealType,
+                cusine_type: this.props.data.cusineType,
+                meal_category: this.props.data.mealCategory,
+                cals: this.props.data.calories,
                 isEditable: this.props.editable,
                 recipes: this.props.data.recipes,
                 recipeDesc: tempDesc,
@@ -65,69 +68,67 @@ class FoodItem extends Component {
 
         // var myurl = `https://boiling-hamlet-20361.herokuapp.com/cooking/food/item/${this.state.id}`;
         var myurl = `http://10.0.0.47:12345/cooking/food/item/${this.state.id}`;
-            if( this.state.name !== null){
-                myurl = myurl+`?name=${this.state.name}`;
-            }
-            if( this.state.calories.length > 0 ){
-                myurl = myurl+`&calories=${this.state.calories}`;
-            }
-            if( this.state.cusine_type.length > 0 ){
-                myurl = myurl+`&cusine_type=${this.state.cusine_type}`;
-            }
-            if( this.state.cusine_type.length > 0 ){
-                myurl = myurl+`&cusineType=${this.state.cusine_type}`;
-            }
-            if( this.state.meal_category.length > 0 ){
-                myurl = myurl+`&mealCategory=${this.state.meal_category}`;
-            }
-            if( this.state.meal_type.length > 0 ){
-                myurl = myurl+`&mealType=${this.state.meal_type}`;
-            }
-            if( this.state.recipeDesc.length > 0 ){
-                myurl = myurl+`&recipeDescription=${this.state.recipeDesc}`;
-            }
-            if( this.state.recipeIngradients.length > 0 ){
-                myurl = myurl+`&recipeIngradients=${this.state.recipeIngradients}`;
-            }
-            if( this.state.recipePreprationInstructions.length > 0 ){
-                myurl = myurl+`&recipePreprationInstructions=${this.state.recipePreprationInstructions}`;
-            }
+        if (this.state.name !== null) {
+            myurl = myurl + `?name=${this.state.name}`;
+        }
+        if (this.state.cals != null) {
+            myurl = myurl + `&calories=${this.state.cals}`;
+        }
+        if (this.state.cusine_type && this.state.cusine_type.length > 0) {
+            myurl = myurl + `&cusineType=${this.state.cusine_type}`;
+        }
+        if (this.state.meal_category && this.state.meal_category.length > 0) {
+            myurl = myurl + `&mealCategory=${this.state.meal_category}`;
+        }
+        if (this.state.meal_type && this.state.meal_type.length > 0) {
+            myurl = myurl + `&mealType=${this.state.meal_type}`;
+        }
+        if (this.state.recipeDesc && this.state.recipeDesc.length > 0) {
+            myurl = myurl + `&recipeDescription=${this.state.recipeDesc}`;
+        }
+        if (this.state.recipeIngradients && this.state.recipeIngradients.length > 0) {
+            myurl = myurl + `&recipeIngradients=${this.state.recipeIngradients}`;
+        }
+        if (this.state.recipePreprationInstructions && this.state.recipePreprationInstructions.length > 0) {
+            myurl = myurl + `&recipePreprationInstructions=${this.state.recipePreprationInstructions}`;
+        }
 
-            let editFormData = new FormData();
-        
-            editFormData.set('file', this.state.pic);
-            // axios.put(url,this.registerData,
-            //     editFormData,
-            //     { headers: { 'Content-Type': 'multipart/form-data' } }
-            // )
-            axios({
-                method: 'PUT',
-                url: myurl ,
-                data: editFormData,
-                query: {
-                    name: this.state.name
-                },
-                config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
-            }).then((response) => {
-                console.log(response);
-                // this.props.cancelFoodItem();
-                this.setState({
-                    showMenu: true
-                })
+        let editFormData = new FormData();
+
+        editFormData.set('file', this.state.pic);
+        // axios.put(url,this.registerData,
+        //     editFormData,
+        //     { headers: { 'Content-Type': 'multipart/form-data' } }
+        // )
+        alert(myurl);
+        axios({
+            method: 'PUT',
+            url: myurl,
+            data: editFormData,
+            query: {
+                name: this.state.name
+            },
+            config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+        }).then((response) => {
+            console.log(response);
+            // this.props.cancelFoodItem();
+            this.setState({
+                showMenu: true
             })
-                .catch(function (response) {
-                    console.log(response);
-                });
+        })
+            .catch(function (response) {
+                console.log(response);
+            });
     }
 
     saveNewFoodItem(formSubmitevent) {
         formSubmitevent.preventDefault();
         if (this.state.isEditable) {
-           this.editFoodItem();
+            this.editFoodItem();
         } else {
             var bodyFormData = new FormData();
             bodyFormData.set('name', this.state.name);
-            bodyFormData.set('calories', this.state.calories);
+            bodyFormData.set('calories', this.state.cals);
             bodyFormData.set('cusineType', this.state.cusine_type);
             bodyFormData.set('mealCategory', this.state.meal_category);
             bodyFormData.set('mealType', this.state.meal_type);
@@ -184,9 +185,9 @@ class FoodItem extends Component {
         });
     }
 
-    handlCaloriesChange(event) {
+    handlcalsChange(event) {
         this.setState({
-            calories: event.target.value
+            cals: event.target.value
         });
     }
 
@@ -214,6 +215,14 @@ class FoodItem extends Component {
         });
     }
 
+    handleMealCategoryChange(event){
+        this.setState(
+            {
+                meal_category: event.target.value
+            }
+        )
+    }
+
     render() {
         const foodItem = (
             <div>
@@ -236,21 +245,21 @@ class FoodItem extends Component {
                                 <td>Meal Type :</td>
                                 <td>
                                     <select title="mealType" value={this.state.meal_type}
-                                        onChange={this.handleMealTypeChange.bind(this)} >
+                                        onChange={this.handleMealTypeChange.bind(this)}
+                                        >
                                         <option name="any">All </option>
                                         <option name="breakfast">Breakfast </option>
                                         <option name="lunch">Lunch </option>
                                         <option name="dinner"> Dinner </option>
                                         <option name="snacks">Snacks </option>
                                     </select>
-
                                 </td>
                             </tr>
                             <tr>
                                 <td> Meal Category : </td>
                                 <td>
                                     <select title="mealCategory" value={this.state.meal_category}
-                                        onChange={this.handlCusineTypeChange.bind(this)} >
+                                        onChange={this.handleMealCategoryChange.bind(this)} >
                                         <option name="any">All </option>
                                         <option name="breakfast">Veg </option>
                                         <option name="lunch">Non Veg </option>
@@ -261,25 +270,25 @@ class FoodItem extends Component {
                             <tr>
                                 <td>Cusine Type :</td>
                                 <td>
-                                    <select title="mealCategory" value={this.state.cusine_type}
+                                    <select title="cusineType" value={this.state.cusine_type}
                                         onChange={this.handlCusineTypeChange.bind(this)} >
                                         <option name="any">All </option>
-                                        <option name="breakfast">Asian </option>
-                                        <option name="lunch">American </option>
-                                        <option name="lunch">Italian </option>
-                                        <option name="lunch">Indian </option>
-                                        <option name="lunch">Thai </option>
+                                        <option name="asian">Asian </option>
+                                        <option name="American">American </option>
+                                        <option name="Italian">Italian </option>
+                                        <option name="Indian">Indian </option>
+                                        <option name="Thai">Thai </option>
                                     </select>
 
                                 </td>
                             </tr>
                             <tr>
-                                <td>Calories :</td>
+                                <td>cals :</td>
                                 <td>
                                     <input type="text"
-                                        value={this.state.calories}
-                                        placeholder="calories"
-                                        onChange={this.handlCaloriesChange.bind(this)}
+                                        value={this.state.cals}
+                                        placeholder="cals"
+                                        onChange={this.handlcalsChange.bind(this)}
                                     />
                                 </td>
                             </tr>

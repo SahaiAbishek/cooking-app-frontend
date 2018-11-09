@@ -52,6 +52,7 @@ class Menu extends Component {
     }
 
     showFoodRecipe(item) {
+        console.log(item);
         this.setState({
             nextPage: "showFoodRecipe",
             showFoodRecipe: true,
