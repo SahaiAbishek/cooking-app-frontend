@@ -18,16 +18,21 @@ class Shoe extends Component {
             endDate: "",
             miles: "",
             size: "",
-            nextPage:""
+            nextPage: ""
         }
     }
 
     componentDidMount() {
+        this.reload();
+    }
+
+    reload() {
         //get user details from last page
         const uName = this.props.user;
         this.setState({
             userName: uName
         });
+        this.setState({ myshoes: [] });
         const url = 'http://10.0.0.47:12345/cooking/user/shoes/' + uName
         // const url = 'http://10.0.0.47:12345/cooking/user/shoes/aaa%40abc.com';
         // axios.get(`https://boiling-hamlet-20361.herokuapp.com/cooking/food/items`)
@@ -61,13 +66,15 @@ class Shoe extends Component {
         })
             .then((response) => {
                 console.log("SUCCESS : " + response);
+                this.reload();
             })
             .catch(function (response) {
                 console.log(response);
             });
+        
     }
 
-    showMenu(event){
+    showMenu(event) {
         event.preventDefault();
         this.setState({
             nextPage: "menu"
@@ -117,7 +124,7 @@ class Shoe extends Component {
     }
 
     render() {
-        if(this.state.nextPage === "menu"){
+        if (this.state.nextPage === "menu") {
             return <Menu user={this.state.userName} />
         }
         return (
@@ -204,7 +211,7 @@ class Shoe extends Component {
                             </td>
                             <td text-align="center">
                                 <button className="btn btn-default"
-                                onClick={this.showMenu.bind(this)} 
+                                    onClick={this.showMenu.bind(this)}
                                 >
                                     Cancel
                                 </button>
