@@ -316,7 +316,7 @@ class MealPlan extends React.Component {
         axios({
             method: 'post',
             // url: 'https://boiling-hamlet-20361.herokuapp.com/cooking/food',
-            url: 'http://10.0.0.47:12345/cooking/user/meal-plan',
+            url: 'http://192.168.1.75:12345/cooking/user/meal-plan',
             data: request,
         })
             .then((response) => {

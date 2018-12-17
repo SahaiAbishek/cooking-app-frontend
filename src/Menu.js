@@ -26,7 +26,7 @@ class Menu extends Component {
             userName: un
         });
         // axios.get(`https://boiling-hamlet-20361.herokuapp.com/cooking/food/items`)
-        axios.get(`http://10.0.0.47:12345/cooking/food/items`)
+        axios.get(`http://192.168.1.75:12345/cooking/food/items`)
             .then(response => {
                 const menuItems = response.data;
                 this.setState({ menuItems });
@@ -65,7 +65,7 @@ class Menu extends Component {
     searchFood(event) {
         if (event.key === 'Enter') {
             // axios.get(`https://boiling-hamlet-20361.herokuapp.com/cooking/food/items/` + event.target.value)
-            axios.get(`http://10.0.0.47:12345/cooking/food/items/` + event.target.value)
+            axios.get(`http://192.168.1.75:12345/cooking/food/items/` + event.target.value)
                 .then(response => {
                     const menuItems = response.data;
                     this.setState({ menuItems });
@@ -83,7 +83,7 @@ class Menu extends Component {
 
     updateFoodPic(item) {
         // const url = 'https://boiling-hamlet-20361.herokuapp.com/cooking/food/ID/' + item.id + '/'
-        const url = 'http://10.0.0.47:12345/cooking/food/ID/' + item.id + '/'
+        const url = 'http://192.168.1.75:12345/cooking/food/ID/' + item.id + '/'
         console.log(url);
         var bodyFormData = new FormData();
         bodyFormData.set('pic', this.state.pic);

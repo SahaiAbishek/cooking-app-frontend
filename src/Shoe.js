@@ -7,7 +7,7 @@ class Shoe extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            devURL: 'http://10.0.0.47:12345',
+            devURL: 'http://192.168.1.75:12345',
             locaURL: 'http://localhost:12345',
             myshoes: [],
             pic: null,
@@ -33,8 +33,8 @@ class Shoe extends Component {
             userName: uName
         });
         this.setState({ myshoes: [] });
-        const url = 'http://10.0.0.47:12345/cooking/user/shoes/' + uName
-        // const url = 'http://10.0.0.47:12345/cooking/user/shoes/aaa%40abc.com';
+        const url = 'http://192.168.1.75:12345/cooking/user/shoes/' + uName
+        // const url = 'http://192.168.1.75:12345/cooking/user/shoes/aaa%40abc.com';
         // axios.get(`https://boiling-hamlet-20361.herokuapp.com/cooking/food/items`)
         axios.get(url)
             .then(response => {
@@ -60,8 +60,8 @@ class Shoe extends Component {
         axios({
             method: 'post',
             // url: 'https://boiling-hamlet-20361.herokuapp.com/cooking/food',
-            url: 'http://10.0.0.47:12345/cooking/user/shoe',
-            // url: 'http://10.0.0.47:12345/cooking/user/shoe?brand=Adidas&model=Adios&startDate=2018-07-22&endDate=2018-10-16&miles=350&size=10.5&email=aaa%40abc.com',
+            url: 'http://192.168.1.75:12345/cooking/user/shoe',
+            // url: 'http://192.168.1.75:12345/cooking/user/shoe?brand=Adidas&model=Adios&startDate=2018-07-22&endDate=2018-10-16&miles=350&size=10.5&email=aaa%40abc.com',
             data: bodyFormData,
         })
             .then((response) => {

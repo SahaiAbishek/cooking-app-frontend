@@ -7,7 +7,7 @@ class Question extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            devURL: 'http://10.0.0.47:12345',
+            devURL: 'http://192.168.1.75:12345',
             locaURL: 'http://localhost:12345',
             welcomeText: "Feeling hungry yet ?",
             negetiveResponseText: "Take your time I am waiting !!!!!!",
