@@ -9,6 +9,9 @@ class Menu extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            url:'',
+            // devURL: 'http://192.168.1.75:12345',
+            // locaURL: 'http://localhost:12345',
             showFoodRecipe: false,
             menuItems: [],
             data: "",
@@ -20,13 +23,35 @@ class Menu extends Component {
     }
 
     componentDidMount() {
+        var env = process.env.REACT_APP_ENV;
+        var url ;
+        if (env === 'local') {
+            this.setState({
+                url: 'http://localhost:12345'
+            })
+            url = 'http://localhost:12345'
+        }
+        if (env === 'dev') {
+            this.setState({
+                url: 'http://192.168.1.75:12345'
+            })
+            url = 'http://192.168.1.75:12345'
+        }
+        if (env === 'prod') {
+            this.setState({
+                url: 'https://boiling-hamlet-20361.herokuapp.com'
+            })
+            url = 'https://boiling-hamlet-20361.herokuapp.com'
+        }
         //get user details from last page
         const un = this.props.user;
         this.setState({
             userName: un
         });
+        
+        alert(url);
         // axios.get(`https://boiling-hamlet-20361.herokuapp.com/cooking/food/items`)
-        axios.get(`http://192.168.1.75:12345/cooking/food/items`)
+        axios.get(url+`/cooking/food/items`)
             .then(response => {
                 const menuItems = response.data;
                 this.setState({ menuItems });
@@ -107,58 +132,58 @@ class Menu extends Component {
     }
 
     render() {
-        const filters = (
-            <div>
-                <p>Filter Options </p>
-                <table className="Filter">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="text"
-                                    placeholder="recipe name or details"
-                                    onKeyPress={this.searchFood.bind(this)}
-                                // onchange={this.searchFood.bind(this)}
-                                />
-                            </td>
-                            <td>
-                                <select title="food_type">
-                                    <option name="vegOrNonVeg">Food Type </option>
-                                    <option name="breakfast">Breakfast </option>
-                                    <option name="lunch">Lunch </option>
-                                    <option name="dinner">Dinner </option>
-                                    <option name="snack"> Snacks </option>
-                                </select>
-                            </td>
-                            <td>
-                                <select title="food_category">
-                                    <option name="vegOrNonVeg">Veg/NonVeg </option>
-                                    <option name="veg">veg </option>
-                                    <option name="nonVeg"> non veg </option>
-                                </select>
-                            </td>
-                            <td>
-                                <select title="Cuisine">
-                                    <option name="cuisineType">Cuisine Type </option>
-                                    <option name="american">American </option>
-                                    <option name="Italian"> Italian </option>
-                                    <option name="american">Indian </option>
-                                    <option name="Italian"> Thai </option>
-                                </select>
-                            </td>
-                            <td>
-                                <select title="calories">
-                                    <option name="calorieCount">Calorie Count </option>
-                                    <option name="under100">Under 100 </option>
-                                    <option name="Small200"> Smaller than 300 </option>
-                                    <option name="all">All </option>
+        // const filters = (
+        //     <div>
+        //         <p>Filter Options </p>
+        //         <table className="Filter">
+        //             <tbody>
+        //                 <tr>
+        //                     <td>
+        //                         <input type="text"
+        //                             placeholder="recipe name or details"
+        //                             onKeyPress={this.searchFood.bind(this)}
+        //                         // onchange={this.searchFood.bind(this)}
+        //                         />
+        //                     </td>
+        //                     <td>
+        //                         <select title="food_type">
+        //                             <option name="vegOrNonVeg">Food Type </option>
+        //                             <option name="breakfast">Breakfast </option>
+        //                             <option name="lunch">Lunch </option>
+        //                             <option name="dinner">Dinner </option>
+        //                             <option name="snack"> Snacks </option>
+        //                         </select>
+        //                     </td>
+        //                     <td>
+        //                         <select title="food_category">
+        //                             <option name="vegOrNonVeg">Veg/NonVeg </option>
+        //                             <option name="veg">veg </option>
+        //                             <option name="nonVeg"> non veg </option>
+        //                         </select>
+        //                     </td>
+        //                     <td>
+        //                         <select title="Cuisine">
+        //                             <option name="cuisineType">Cuisine Type </option>
+        //                             <option name="american">American </option>
+        //                             <option name="Italian"> Italian </option>
+        //                             <option name="american">Indian </option>
+        //                             <option name="Italian"> Thai </option>
+        //                         </select>
+        //                     </td>
+        //                     <td>
+        //                         <select title="calories">
+        //                             <option name="calorieCount">Calorie Count </option>
+        //                             <option name="under100">Under 100 </option>
+        //                             <option name="Small200"> Smaller than 300 </option>
+        //                             <option name="all">All </option>
 
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        );
+        //                         </select>
+        //                     </td>
+        //                 </tr>
+        //             </tbody>
+        //         </table>
+        //     </div>
+        // );
 
         if(this.state.nextPage=== "userShoes"){
             return <Shoe user={this.state.userName} />

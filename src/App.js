@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Question from './Question';
+import Login from './Login';
 
 class App extends Component {
 
@@ -25,7 +25,7 @@ class App extends Component {
                     <img src={logo} className="App-logo" alt="logo" />
                     <h1 className="App-title"> </h1>
                 </header>
-                <Question />
+                <Login />
             </div>
         );
     }

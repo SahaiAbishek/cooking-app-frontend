@@ -7,6 +7,9 @@ class FoodItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            url: '',
+            // devURL: 'http://192.168.1.75:12345',
+            // locaURL: 'http://localhost:12345',
             id: '',
             name: '',
             meal_type: '',
@@ -28,6 +31,23 @@ class FoodItem extends Component {
     }
 
     componentDidMount() {
+        var env = process.env.REACT_APP_ENV;
+        if (env === 'local') {
+            this.setState({
+                url: 'http://localhost:12345'
+            })
+        }
+        if (env === 'dev') {
+            this.setState({
+                url: 'http://192.168.1.75:12345'
+            })
+        }
+        if (env === 'prod') {
+            this.setState({
+                url: 'https://boiling-hamlet-20361.herokuapp.com'
+            })
+        }
+
         this.setState({
             userName: this.props.user
         })
@@ -67,7 +87,7 @@ class FoodItem extends Component {
     editFoodItem() {
 
         // var myurl = `https://boiling-hamlet-20361.herokuapp.com/cooking/food/item/${this.state.id}`;
-        var myurl = `http://192.168.1.75:12345/cooking/food/item/${this.state.id}`;
+        var myurl = this.state.url + `/cooking/food/item/${this.state.id}`;
         if (this.state.name !== null) {
             myurl = myurl + `?name=${this.state.name}`;
         }
@@ -115,10 +135,9 @@ class FoodItem extends Component {
             this.setState({
                 showMenu: true
             })
-        })
-            .catch(function (response) {
-                console.log(response);
-            });
+        }).catch(function (response) {
+            console.log(response);
+        });
     }
 
     saveNewFoodItem(formSubmitevent) {
@@ -139,7 +158,7 @@ class FoodItem extends Component {
             axios({
                 method: 'post',
                 // url: 'https://boiling-hamlet-20361.herokuapp.com/cooking/food',
-                url: 'http://192.168.1.75:12345/cooking/food',
+                url: this.state.url + `/cooking/food`,
                 data: bodyFormData,
                 // config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
@@ -164,12 +183,6 @@ class FoodItem extends Component {
     handleMealTypeChange(event) {
         this.setState({
             meal_type: event.target.value
-        });
-    }
-
-    handleMealCategoryChange(event) {
-        this.setState({
-            meal_category: event.target.value
         });
     }
 
@@ -215,7 +228,7 @@ class FoodItem extends Component {
         });
     }
 
-    handleMealCategoryChange(event){
+    handleMealCategoryChange(event) {
         this.setState(
             {
                 meal_category: event.target.value
@@ -246,7 +259,7 @@ class FoodItem extends Component {
                                 <td>
                                     <select title="mealType" value={this.state.meal_type}
                                         onChange={this.handleMealTypeChange.bind(this)}
-                                        >
+                                    >
                                         <option name="any">All </option>
                                         <option name="breakfast">Breakfast </option>
                                         <option name="lunch">Lunch </option>

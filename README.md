@@ -1,3 +1,6 @@
+Start project :  REACT_APP_ENV=local npm start
+where REACT_APP_ENV specifies the environment
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>

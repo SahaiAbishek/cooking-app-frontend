@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import axios from 'axios';
-import Menu from './Menu'
+import React, { Component } from 'react';
+import Menu from './Menu';
 
 class Login extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            devURL: 'http://192.168.1.75:12345',
-            locaURL: 'http://localhost:12345',
+            url: '',
+            // devURL: 'http://192.168.1.75:12345',
+            // locaURL: 'http://localhost:12345',
             welcomeText: "Continue as Guest",
             negetiveResponseText: "Take your time I am waiting !!!!!!",
             isNegetiveResponse: false,
@@ -17,6 +18,25 @@ class Login extends Component {
             password1: "",
             nextPage: "none",
             errors: []
+        }
+    }
+
+    componentDidMount() {
+        var env = process.env.REACT_APP_ENV;
+        if (env === 'local') {
+            this.setState({
+                url: 'http://localhost:12345'
+            })
+        }
+        if (env === 'dev') {
+            this.setState({
+                url: 'http://192.168.1.75:12345'
+            })
+        }
+        if (env === 'prod') {
+            this.setState({
+                url: 'https://boiling-hamlet-20361.herokuapp.com'
+            })
         }
     }
 
@@ -78,12 +98,12 @@ class Login extends Component {
         const errors = this.validateFields(username, password);
 
 
-        var url = this.state.locaURL;
-        const request = 
-            {
-                "email": username,
-                "password": password,
-            };
+        var url = this.state.url;
+        const request =
+        {
+            "email": username,
+            "password": password,
+        };
 
         axios({
             method: 'post',
@@ -91,7 +111,7 @@ class Login extends Component {
             url: url + `/cooking/user/login`,
             data: request,
         })
-            .then((response) =>  {
+            .then((response) => {
                 if (response.data) {
                     this.setState({
                         // username:this.state.username,
@@ -119,14 +139,14 @@ class Login extends Component {
             this.setState({ errors });
             return;
         }
-       
 
-        var url = this.state.locaURL;
-        const request = 
-            {
-                "email": username,
-                "password": password,
-            };
+
+        var url = this.state.url;
+        const request =
+        {
+            "email": username,
+            "password": password,
+        };
 
         axios({
             method: 'post',
